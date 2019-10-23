@@ -1,0 +1,8 @@
+.paper {
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.paper:hover {
+    background-color: yellow;
+}

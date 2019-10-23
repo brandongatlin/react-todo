@@ -5,8 +5,10 @@ import ApolloClient from "apollo-boost";
 import { ApolloProvider } from '@apollo/react-hooks';
 
 // components
-import Btn from './Components/Btn';
-import DeleteIcon from '@material-ui/icons/Delete';
+// import Btn from './Components/Btn';
+// import DeleteIcon from '@material-ui/icons/Delete';
+
+import AllTodos from './Components/Views/AllTodos';
 
 
 const client = new ApolloClient({
@@ -19,7 +21,8 @@ const client = new ApolloClient({
 
 const App = () => (
   <ApolloProvider client={client}>
-    <Btn 
+    <AllTodos />
+    {/* <Btn 
       id="1"
       classNames="btn"
       text="hello"
@@ -27,7 +30,7 @@ const App = () => (
       size="large"
       variant="contained"
       endIcon={<DeleteIcon/>}
-    />
+    /> */}
   </ApolloProvider>
 );
 
