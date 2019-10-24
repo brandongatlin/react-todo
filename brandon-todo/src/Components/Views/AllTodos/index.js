@@ -1,9 +1,10 @@
 import React from 'react';
 
-import Grid from '@material-ui/core/Grid';
+import { graphql, Query } from "react-apollo";
+import { getTodos } from "../../../queries";
 
+import Grid from '@material-ui/core/Grid';
 import Card from '../../Card';
-// import Checkbox from '../../Checkbox';
 
 const data = [
     {
@@ -28,16 +29,25 @@ const data = [
 
 const AllTodos = (props)=> {
     return(
-        <Grid container spacing={3}>
-            {data.map((task)=> {
-                return (
-                    <Grid key={task.id} item sm={12}>
-                        <Card title={task.title} text={task.text} checked={task.checked}/>
-                    </Grid>
-                );
-            })}
-        </Grid>
+        <Query query={getTodos}>
+
+            {({ loading, error, data }) => {
+                if (loading) return <div>loading...</div>;
+                if (error) return `Error!: ${error}`;
+                {console.log(data)}
+
+                    {data.map((task)=> {
+                        return (
+                            <Grid key={task.id} item sm={12}>
+                                <Card title={task.title} text={task.text} checked={task.checked}/>
+                            </Grid>
+                        );
+                    })}
+                }}
+
+        </Query>
+
     );
 }
 
-export default AllTodos;
+export default graphql(getTodos)(AllTodos);

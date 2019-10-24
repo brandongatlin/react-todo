@@ -3,16 +3,17 @@ import './App.css';
 
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from '@apollo/react-hooks';
-
-// components
-// import Btn from './Components/Btn';
-// import DeleteIcon from '@material-ui/icons/Delete';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { RestLink } from 'apollo-link-rest';
 
 import AllTodos from './Components/Views/AllTodos';
 
+const restLink = new RestLink({ uri: "https://practiceapi.devmountain.com/api/tasks/" });
+
 
 const client = new ApolloClient({
-  uri: "http://localhost:4000/graphql",
+  link: restLink,
+  cache: new InMemoryCache(),
   onError: ({ networkError, graphQLErrors }) => {
     console.log('graphQLErrors', graphQLErrors)
     console.log('networkError', networkError)
@@ -22,15 +23,6 @@ const client = new ApolloClient({
 const App = () => (
   <ApolloProvider client={client}>
     <AllTodos />
-    {/* <Btn 
-      id="1"
-      classNames="btn"
-      text="hello"
-      color="secondary"
-      size="large"
-      variant="contained"
-      endIcon={<DeleteIcon/>}
-    /> */}
   </ApolloProvider>
 );
 
