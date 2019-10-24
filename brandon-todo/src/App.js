@@ -10,8 +10,7 @@ import { RestLink } from 'apollo-link-rest';
 
 import AllTodos from './Components/Views/AllTodos';
 
-// const restLink = new RestLink({ uri: "https://practiceapi.devmountain.com/api/tasks/" });
-const restLink = new RestLink({ uri: "https://swapi.co/api/" });
+const restLink = new RestLink({ uri: "https://practiceapi.devmountain.com/api/tasks" });
 
 const client = new ApolloClient({
   link: restLink,
@@ -23,16 +22,19 @@ const client = new ApolloClient({
 });
 
 const query = gql`
-  query luke {
-    person @rest(type: "Person", path: "people/1/") {
-      name
+  query todos {
+    tasks @rest(type: "task", path: "/"){
+      id
+      title
+      description
+      completed
     }
   }
 `;
 
 // Invoke the query and log the person's name
 client.query({ query }).then(response => {
-  console.log(response.data.person.name);
+  console.log(response.data);
 });
 
 const App = () => (
