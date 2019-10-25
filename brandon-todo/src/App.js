@@ -2,7 +2,6 @@ import React from 'react';
 import './App.css';
 
 import ApolloClient from "apollo-client";
-import { gql } from "apollo-boost";
 
 import { ApolloProvider } from '@apollo/react-hooks';
 import { InMemoryCache } from 'apollo-cache-inmemory';
@@ -21,25 +20,25 @@ const client = new ApolloClient({
   }
 });
 
-const query = gql`
-  query todos {
-    tasks @rest(type: "task", path: "/"){
-      id
-      title
-      description
-      completed
-    }
-  }
-`;
+// const query = gql`
+//   query todos {
+//     tasks @rest(type: "task", path: "/"){
+//       id
+//       title
+//       description
+//       completed
+//     }
+//   }
+// `;
 
 // Invoke the query and log the person's name
-client.query({ query }).then(response => {
-  console.log(response.data);
-});
+// client.query({ query }).then(response => {
+//   console.log(response.data);
+// });
 
 const App = () => (
   <ApolloProvider client={client}>
-    {/* <AllTodos /> */}
+    <AllTodos />
   </ApolloProvider>
 );
 
