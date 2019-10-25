@@ -11,7 +11,6 @@ const AllTodos = (props)=> {
     
     return( 
         <Query query={getTodos}>
-
             {({ loading, error, data }) => {
                 if (loading) return <div>loading...</div>;
                 if (error) return `Error!: ${error}`;
@@ -19,15 +18,20 @@ const AllTodos = (props)=> {
                     // console.log(data.tasks)
 
                     return data.tasks.map((task) => {
-                        return (
-                            <Grid key={ task.id } item sm={ 12 }>
-                                <Card title={ task.title } text={ task.description } checked={ task.completed } />
-                            </Grid>
-                        );
+                        if(task.title){
+                            return (
+                                <Grid key={ task.id } item sm={ 12 }>
+                                    <Card title={ task.title } text={ task.description } checked={ task.completed } />
+                                </Grid>
+                            );
+                        } else {
+                            return null;
+                        }
+                        
                     });
                 }
                 
-                }}
+            }}
         </Query>
     );
 }

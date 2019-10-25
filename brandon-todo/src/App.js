@@ -7,6 +7,9 @@ import { ApolloProvider } from '@apollo/react-hooks';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { RestLink } from 'apollo-link-rest';
 
+import Grid from '@material-ui/core/Grid';
+
+
 import AllTodos from './Components/Views/AllTodos';
 
 const restLink = new RestLink({ uri: "https://practiceapi.devmountain.com/api/tasks" });
@@ -38,7 +41,9 @@ const client = new ApolloClient({
 
 const App = () => (
   <ApolloProvider client={client}>
-    <AllTodos />
+    <Grid container>
+      <AllTodos />
+    </Grid>
   </ApolloProvider>
 );
 
