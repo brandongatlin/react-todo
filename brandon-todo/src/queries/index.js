@@ -1,13 +1,6 @@
 import { gql } from "apollo-boost";
 
-// const getTodos = gql `
-//     query todos {
-//         id
-//         title
-//         description
-//         completed
-//     }
-// `
+
 
 const getTodos = gql`
   query todos {
@@ -20,4 +13,13 @@ const getTodos = gql`
   }
 `;
 
-export { getTodos };
+const updateCompleted = gql`
+  mutation updateCompleted($input: taskId!) {
+    updateCompleted(input: $taskId)
+      @rest(type: "task", path: "/{args.taskId}", method: "PUT") {
+        completed
+    }
+  }
+`
+
+export { getTodos, updateCompleted };

@@ -11,6 +11,7 @@ import Grid from '@material-ui/core/Grid';
 
 
 import AllTodos from './Components/Views/AllTodos';
+// import Detail from './Components/Views/Detail';
 
 const restLink = new RestLink({ uri: "https://practiceapi.devmountain.com/api/tasks" });
 
@@ -23,21 +24,6 @@ const client = new ApolloClient({
   }
 });
 
-// const query = gql`
-//   query todos {
-//     tasks @rest(type: "task", path: "/"){
-//       id
-//       title
-//       description
-//       completed
-//     }
-//   }
-// `;
-
-// Invoke the query and log the person's name
-// client.query({ query }).then(response => {
-//   console.log(response.data);
-// });
 
 const App = () => (
   <ApolloProvider client={client}>
