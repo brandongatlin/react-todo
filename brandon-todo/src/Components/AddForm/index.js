@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
-import { Mutation, withApollo } from 'react-apollo'
+import { Mutation, graphql } from 'react-apollo'
+import * as compose from 'lodash.flowright';
 import TextField from '@material-ui/core/TextField';
-import {addTodoQuery} from '../../queries';
+import {addTodoQuery, getTodos} from '../../queries';
 import { useMutation } from "@apollo/react-hooks";
 
 
@@ -14,7 +15,6 @@ const AddForm = (props) => {
     
     return(
         <Mutation
-        
         mutation={addTodoQuery}>
             {(addTodoQuery, { loading, error, data }) => {
             if (loading) return 'Loading...';
@@ -22,10 +22,12 @@ const AddForm = (props) => {
 
         return(
             <form
-                onSubmit={(e)=> {
+                onSubmit={async (e)=> {
                     e.preventDefault();
-                    console.log(title, description);
-                    addTodo({variables: {title: title, description: description }});
+                    await addTodo({
+                            variables: {title: title, description: description }, refetchQueries: [{ query: getTodos }]
+                        }
+                    );
                 }}
             >
                 <TextField
@@ -55,4 +57,11 @@ const AddForm = (props) => {
     )
 }
 
-export default withApollo(AddForm);
+export default compose(
+    graphql(addTodoQuery, {
+      name: "addTodoQuery"
+    }),
+    graphql(getTodos, {
+      name: "getTodos"
+    })
+  )(AddForm);
