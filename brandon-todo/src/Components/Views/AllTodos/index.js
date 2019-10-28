@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
+import { graphql, Query, Mutation } from "react-apollo";
+import { getTodos, deleteTodo } from "../../../queries";
+import * as compose from 'lodash.flowright';
 
-import { graphql, Query } from "react-apollo";
-import { getTodos } from "../../../queries";
-
-import Grid from '@material-ui/core/Grid';
 import Card from '../../Card';
 import Detail from '../Detail';
 import Button from '@material-ui/core/Button';
@@ -13,10 +12,7 @@ const AllTodos = (props)=> {
 
     const [currentTitle, setCurrentTitle] = useState("Click A Card");
     const [currentDescription, setCurrentDescription] = useState("To View The Task Detail");
-    const [status, setStatus] = useState(false)
-
-    console.log(props)
-
+    const [toDelete, setToDelete] = useState("");
     
     return( 
         <Query query={getTodos}>
@@ -26,28 +22,37 @@ const AllTodos = (props)=> {
                 if(data.tasks){
                     
                     return( 
-                        <div>
+                        <Mutation mutation={deleteTodo}>
+                            {deleteTodo => (
+                                <div>
                             {data.tasks.map((task) => {
-                                if(task.title){
+                                if(task.title && !task.completed){
                                     
                                     return (
-                                        <div key={ task.id }>
-                                        <Grid 
+                                        <div id={task.id} className="todo-card" key={ task.id }
                                             onClick={()=> {
-                                                console.log(task.title)
                                                 setCurrentTitle(task.title)
                                                 setCurrentDescription(task.description)
-                                            }}  item sm={ 12 }>
+                                            }}>
                                             <Card task={task.id} title={ task.title } text={ task.description } checked={ task.completed } />
-                                        </Grid>
-                                        <Button
-                                            variant='outlined'
-                                            color="secondary"
-                                            onClick={()=> {
-                                                setStatus(!status);
-                                            }}
-                                        >{status ? ("Done") : ("Not Done")}
-                                        </Button>
+                                            <Button
+                                                value={task.id}
+                                                variant="contained"
+                                                color="secondary"
+                                                onClick={async (e) => {
+                                                    const id = e.currentTarget.value;
+                                                    console.log(id)
+                                                    setToDelete(id);
+                                                    await deleteTodo({
+                                                        variables: {id},
+                                                        // refetchQueries: [{ query: getBlogsQuery }]
+                                                      });
+
+                                                }}
+                                            >
+                                                Delete
+                                            </Button>
+                                            
                                         </div>
                                     );
                                 } else {
@@ -57,6 +62,9 @@ const AllTodos = (props)=> {
                             }
                             <Detail title={currentTitle} description={currentDescription} />
                         </div>
+                            )}
+                        
+                        </Mutation>
                     );
                 }
             }}
@@ -64,4 +72,11 @@ const AllTodos = (props)=> {
     );
 }
 
-export default graphql(getTodos)(AllTodos);
+export default compose(
+    graphql(getTodos, {
+      name: "getTodos"
+    }),
+    graphql(deleteTodo, {
+      name: "deleteTodo"
+    })
+  )(AllTodos);

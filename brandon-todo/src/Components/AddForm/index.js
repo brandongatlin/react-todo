@@ -10,13 +10,13 @@ const AddForm = (props) => {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
 
-    const [ addTodo, { data, error, loading }] = useMutation(addTodoQuery);
+    const [ addTodo, { error, loading }] = useMutation(addTodoQuery);
 
     
     return(
         <Mutation
         mutation={addTodoQuery}>
-            {(addTodoQuery, { loading, error, data }) => {
+            {() => {
             if (loading) return 'Loading...';
             if (error) return `Error! ${error.message}`;
 
@@ -28,11 +28,14 @@ const AddForm = (props) => {
                             variables: {title: title, description: description }, refetchQueries: [{ query: getTodos }]
                         }
                     );
+                    setTitle("");
+                    setDescription("");
                 }}
             >
                 <TextField
                     required
-                    label="Required"
+                    // label="Required"
+                    placeholder="Title"
                     margin="normal"
                     onChange={(e) => {
                         setTitle(e.target.value)
@@ -40,15 +43,20 @@ const AddForm = (props) => {
                     }
                     value={title}
                 />
+                <br/>
                 <TextField
                     margin="normal"
+                    placeholder="Description"
+
                     onChange={(e) => {
                         setDescription(e.target.value);
                         }
                     }
                     value={description}
                 />
+                <br/>
                 <button type='submit'>Submit</button>
+                <hr/>
             </form>
         )
     }}

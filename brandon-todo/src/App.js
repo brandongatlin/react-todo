@@ -7,7 +7,7 @@ import { ApolloProvider } from '@apollo/react-hooks';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { RestLink } from 'apollo-link-rest';
 
-import Grid from '@material-ui/core/Grid';
+import Container from '@material-ui/core/Container';
 
 
 import AllTodos from './Components/Views/AllTodos';
@@ -27,10 +27,10 @@ const client = new ApolloClient({
 
 const App = () => (
   <ApolloProvider client={client}>
-    <Grid container>
+    <Container>
       <AddForm/>
       <AllTodos />
-    </Grid>
+      </Container>
   </ApolloProvider>
 );
 

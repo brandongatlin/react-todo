@@ -25,13 +25,18 @@ const addTodoQuery = gql`
   }
 `
 
-const updateCompleted = gql`
-  mutation updateCompleted($input: taskId!) {
-    updateCompleted(input: $taskId)
-      @rest(type: "task", path: "/{args.taskId}", method: "PUT") {
+const deleteTodo = gql`
+  mutation deleteTodo($id: String!) {
+    deleteTodo(id: $id)
+      @rest(type: "task", path: "/{args.id}", method: "DELETE") {
+        id
+        title
+        description
         completed
-    }
+      }
   }
 `
 
-export { getTodos, addTodoQuery, updateCompleted };
+
+
+export { getTodos, addTodoQuery, deleteTodo };
