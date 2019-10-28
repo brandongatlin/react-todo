@@ -11,7 +11,7 @@ import Grid from '@material-ui/core/Grid';
 
 
 import AllTodos from './Components/Views/AllTodos';
-// import Detail from './Components/Views/Detail';
+import AddForm from './Components/AddForm';
 
 const restLink = new RestLink({ uri: "https://practiceapi.devmountain.com/api/tasks" });
 
@@ -28,6 +28,7 @@ const client = new ApolloClient({
 const App = () => (
   <ApolloProvider client={client}>
     <Grid container>
+      <AddForm/>
       <AllTodos />
     </Grid>
   </ApolloProvider>

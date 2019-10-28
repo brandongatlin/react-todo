@@ -13,6 +13,18 @@ const getTodos = gql`
   }
 `;
 
+const addTodoQuery = gql`
+  mutation addTodoQuery($title: String!, $description: String!) {
+    addTodoQuery(input: {title: $title, description: $description})
+      @rest(type: "task", path: "/", method: "POST") {
+        id
+        title
+        description
+        completed
+      }
+  }
+`
+
 const updateCompleted = gql`
   mutation updateCompleted($input: taskId!) {
     updateCompleted(input: $taskId)
@@ -22,4 +34,4 @@ const updateCompleted = gql`
   }
 `
 
-export { getTodos, updateCompleted };
+export { getTodos, addTodoQuery, updateCompleted };

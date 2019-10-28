@@ -6,12 +6,17 @@ import { getTodos } from "../../../queries";
 import Grid from '@material-ui/core/Grid';
 import Card from '../../Card';
 import Detail from '../Detail';
+import Button from '@material-ui/core/Button';
 
 
 const AllTodos = (props)=> {
 
     const [currentTitle, setCurrentTitle] = useState("Click A Card");
     const [currentDescription, setCurrentDescription] = useState("To View The Task Detail");
+    const [status, setStatus] = useState(false)
+
+    console.log(props)
+
     
     return( 
         <Query query={getTodos}>
@@ -19,22 +24,31 @@ const AllTodos = (props)=> {
                 if (loading) return <div>loading...</div>;
                 if (error) return `Error!: ${error}`;
                 if(data.tasks){
-                    // setCurrentTitle(props.data.tasks[0].title)
-                    // setCurrentDescription(props.data.tasks[0].description)
+                    
                     return( 
                         <div>
                             {data.tasks.map((task) => {
                                 if(task.title){
                                     
                                     return (
+                                        <div key={ task.id }>
                                         <Grid 
                                             onClick={()=> {
                                                 console.log(task.title)
                                                 setCurrentTitle(task.title)
                                                 setCurrentDescription(task.description)
-                                            }} key={ task.id } item sm={ 12 }>
+                                            }}  item sm={ 12 }>
                                             <Card task={task.id} title={ task.title } text={ task.description } checked={ task.completed } />
                                         </Grid>
+                                        <Button
+                                            variant='outlined'
+                                            color="secondary"
+                                            onClick={()=> {
+                                                setStatus(!status);
+                                            }}
+                                        >{status ? ("Done") : ("Not Done")}
+                                        </Button>
+                                        </div>
                                     );
                                 } else {
                                     return null;
