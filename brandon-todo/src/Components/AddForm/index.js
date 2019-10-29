@@ -25,7 +25,8 @@ const AddForm = (props) => {
                 onSubmit={async (e)=> {
                     e.preventDefault();
                     await addTodo({
-                            variables: {title: title, description: description }, refetchQueries: [{ query: getTodos }]
+                            variables: {title: title, description: description },
+                            refetchQueries: [{ query: getTodos }]
                         }
                     );
                     setTitle("");
@@ -34,7 +35,6 @@ const AddForm = (props) => {
             >
                 <TextField
                     required
-                    // label="Required"
                     placeholder="Title"
                     margin="normal"
                     onChange={(e) => {

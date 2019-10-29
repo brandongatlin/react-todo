@@ -14,9 +14,21 @@ const getTodos = gql`
 `;
 
 const addTodoQuery = gql`
-  mutation addTodoQuery($title: String!, $description: String!) {
+  mutation addTodoQuery($description: String!) {
     addTodoQuery(input: {title: $title, description: $description})
       @rest(type: "task", path: "/", method: "POST") {
+        id
+        title
+        description
+        completed
+      }
+  }
+`
+
+const markComplete = gql`
+  mutation markComplete($id: String!) {
+    markComplete(id: $id)
+      @rest(type: "task", path: "/{args.id}", method: "PUT") {
         id
         title
         description
@@ -39,4 +51,4 @@ const deleteTodo = gql`
 
 
 
-export { getTodos, addTodoQuery, deleteTodo };
+export { getTodos, addTodoQuery, deleteTodo, markComplete };

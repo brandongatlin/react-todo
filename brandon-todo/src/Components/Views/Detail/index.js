@@ -9,7 +9,6 @@ import Typography from '@material-ui/core/Typography';
 const Detail = (props) => {
     // const [status, setStatus] = useState(props.complete)
 
-    console.log(props)
 
     return(
         <Card id="detail">

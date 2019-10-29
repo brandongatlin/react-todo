@@ -12,7 +12,6 @@ const AllTodos = (props)=> {
 
     const [currentTitle, setCurrentTitle] = useState("Click A Card");
     const [currentDescription, setCurrentDescription] = useState("To View The Task Detail");
-    const [toDelete, setToDelete] = useState("");
     
     return( 
         <Query query={getTodos}>
@@ -41,13 +40,10 @@ const AllTodos = (props)=> {
                                                 color="secondary"
                                                 onClick={async (e) => {
                                                     const id = e.currentTarget.value;
-                                                    console.log(id)
-                                                    setToDelete(id);
                                                     await deleteTodo({
                                                         variables: {id},
-                                                        // refetchQueries: [{ query: getBlogsQuery }]
+                                                        refetchQueries: [{ query: getTodos }]
                                                       });
-
                                                 }}
                                             >
                                                 Delete
