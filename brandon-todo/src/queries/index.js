@@ -14,7 +14,7 @@ const getTodos = gql`
 `;
 
 const addTodoQuery = gql`
-  mutation addTodoQuery($description: String!) {
+  mutation addTodoQuery($title: String!, $description: String!) {
     addTodoQuery(input: {title: $title, description: $description})
       @rest(type: "task", path: "/", method: "POST") {
         id
