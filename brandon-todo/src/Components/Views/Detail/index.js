@@ -1,17 +1,22 @@
 import React from 'react';
+import { graphql, Mutation } from "react-apollo";
+import { markComplete, getTodos } from "../../../queries";
+import * as compose from 'lodash.flowright';
+
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 
 
 const Detail = (props) => {
-    // const [status, setStatus] = useState(props.complete)
-
 
     return(
-        <Card id="detail">
+        <Mutation mutation={markComplete}>
+            {markComplete => (
+            <Card id="detail">
             <CardActionArea>
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">
@@ -23,20 +28,33 @@ const Detail = (props) => {
                 </CardContent>
             </CardActionArea>
             <CardActions>
-            {/* <Button
-                variant="contained"
-                color="secondary"
-                startIcon={<DoneSharp />}
-                onClick={()=> {
-                    setStatus(!status);
-                }}
-            >
-                {status ? ("Done") : ("Not Done")}
-            </Button> */}
-                
+                <Button
+                    color="primary"
+                    variant="contained"
+                    value={props.id}
+                    onClick={async (e)=> {
+                        const id = e.currentTarget.value;
+                        await markComplete({
+                            variables: {id},
+                            refetchQueries: [{ query: getTodos }]
+                        })
+                        
+                    }}
+                >Update
+                </Button>
             </CardActions>
         </Card>
+            )}
+        </Mutation>
+        
     )
 }
 
-export default Detail;
+export default compose(
+    graphql(markComplete, {
+      name: "markComplete"
+    }),
+    graphql(getTodos, {
+      name: "getTodos"
+    })
+  )(Detail);

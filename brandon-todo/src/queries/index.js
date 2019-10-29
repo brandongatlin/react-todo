@@ -27,8 +27,8 @@ const addTodoQuery = gql`
 
 const markComplete = gql`
   mutation markComplete($id: String!) {
-    markComplete(id: $id)
-      @rest(type: "task", path: "/{args.id}", method: "PUT") {
+    markComplete(input: {id: $id})
+      @rest(type: "task", path: "/{args.input.id}", method: "PUT") {
         id
         title
         description

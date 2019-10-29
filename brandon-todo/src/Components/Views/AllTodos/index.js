@@ -12,6 +12,8 @@ const AllTodos = (props)=> {
 
     const [currentTitle, setCurrentTitle] = useState("Click A Card");
     const [currentDescription, setCurrentDescription] = useState("To View The Task Detail");
+    const [currentId, setCurrentId] = useState("");
+    
     
     return( 
         <Query query={getTodos}>
@@ -30,8 +32,9 @@ const AllTodos = (props)=> {
                                     return (
                                         <div id={task.id} className="todo-card" key={ task.id }
                                             onClick={()=> {
-                                                setCurrentTitle(task.title)
-                                                setCurrentDescription(task.description)
+                                                setCurrentTitle(task.title);
+                                                setCurrentDescription(task.description);
+                                                setCurrentId(task.id);
                                             }}>
                                             <Card task={task.id} title={ task.title } text={ task.description } checked={ task.completed } />
                                             <Button
@@ -56,7 +59,7 @@ const AllTodos = (props)=> {
                                 }
                             })
                             }
-                            <Detail title={currentTitle} description={currentDescription} />
+                            <Detail id={currentId} title={currentTitle} description={currentDescription} />
                         </div>
                             )}
                         
