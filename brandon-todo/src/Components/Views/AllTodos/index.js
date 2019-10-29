@@ -1,11 +1,10 @@
 import React, {useState} from 'react';
-import { graphql, Query, Mutation } from "react-apollo";
-import { getTodos, deleteTodo } from "../../../queries";
+import { graphql, Query } from "react-apollo";
+import { getTodos } from "../../../queries";
 import * as compose from 'lodash.flowright';
 
 import Card from '../../Card';
 import Detail from '../Detail';
-import Button from '@material-ui/core/Button';
 
 
 const AllTodos = (props)=> {
@@ -23,9 +22,8 @@ const AllTodos = (props)=> {
                 if(data.tasks){
                     
                     return( 
-                        <Mutation mutation={deleteTodo}>
-                            {deleteTodo => (
-                                <div>
+                        <div>
+                        <div>
                             {data.tasks.map((task) => {
                                 if(task.title && !task.completed){
                                     
@@ -37,21 +35,6 @@ const AllTodos = (props)=> {
                                                 setCurrentId(task.id);
                                             }}>
                                             <Card task={task.id} title={ task.title } text={ task.description } checked={ task.completed } />
-                                            <Button
-                                                value={task.id}
-                                                variant="contained"
-                                                color="secondary"
-                                                onClick={async (e) => {
-                                                    const id = e.currentTarget.value;
-                                                    await deleteTodo({
-                                                        variables: {id},
-                                                        refetchQueries: [{ query: getTodos }]
-                                                      });
-                                                }}
-                                            >
-                                                Delete
-                                            </Button>
-                                            
                                         </div>
                                     );
                                 } else {
@@ -59,11 +42,9 @@ const AllTodos = (props)=> {
                                 }
                             })
                             }
-                            <Detail id={currentId} title={currentTitle} description={currentDescription} />
                         </div>
-                            )}
-                        
-                        </Mutation>
+                        <Detail id={currentId} title={currentTitle} description={currentDescription} />
+                        </div>
                     );
                 }
             }}
@@ -74,8 +55,5 @@ const AllTodos = (props)=> {
 export default compose(
     graphql(getTodos, {
       name: "getTodos"
-    }),
-    graphql(deleteTodo, {
-      name: "deleteTodo"
     })
   )(AllTodos);

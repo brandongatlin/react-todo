@@ -39,8 +39,8 @@ const markComplete = gql`
 
 const deleteTodo = gql`
   mutation deleteTodo($id: String!) {
-    deleteTodo(id: $id)
-      @rest(type: "task", path: "/{args.id}", method: "DELETE") {
+    deleteTodo(input: {id: $id})
+      @rest(type: "task", path: "/{args.input.id}", method: "DELETE") {
         id
         title
         description

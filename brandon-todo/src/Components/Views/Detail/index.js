@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { graphql, Mutation } from "react-apollo";
-import { markComplete, getTodos } from "../../../queries";
+import { markComplete, getTodos, deleteTodo } from "../../../queries";
 import * as compose from 'lodash.flowright';
 
 import Card from '@material-ui/core/Card';
@@ -12,15 +12,27 @@ import Button from '@material-ui/core/Button';
 
 
 const Detail = (props) => {
+    const [title, setTitle] = useState(props.title);
+    console.log(title);
 
     return(
+        <Mutation mutation={deleteTodo}>
+             {deleteTodo => (
         <Mutation mutation={markComplete}>
             {markComplete => (
             <Card id="detail">
             <CardActionArea>
                 <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2">
-                        {props.title}
+                    <Typography 
+                    gutterBottom variant="h5" 
+                    component="h2"
+                    >
+                        <input
+                            value={title}
+                            onChange={(e)=> {
+                                setTitle(e.currentTarget.value)
+                            }}
+                        />
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p">
                         {props.description}
@@ -38,15 +50,30 @@ const Detail = (props) => {
                             variables: {id},
                             refetchQueries: [{ query: getTodos }]
                         })
-                        
                     }}
-                >Update
+                >Done
+                </Button>
+                <Button
+                    value={props.id}
+                    variant="contained"
+                    color="secondary"
+                    onClick={async (e) => {
+                        const id = e.currentTarget.value;
+                        await deleteTodo({
+                            variables: {id},
+                            refetchQueries: [{ query: getTodos }]
+                            });
+                    }}
+                >
+                    Delete
                 </Button>
             </CardActions>
         </Card>
             )}
         </Mutation>
-        
+            )}
+        </Mutation>
+             
     )
 }
 
