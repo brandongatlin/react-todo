@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { graphql, Mutation } from "react-apollo";
-import { markComplete, getTodos, deleteTodo } from "../../../queries";
+import { markComplete, getTodos, deleteTodo, updateTodo } from "../../../queries";
 import * as compose from 'lodash.flowright';
 
 import Card from '@material-ui/core/Card';
@@ -13,9 +13,10 @@ import Button from '@material-ui/core/Button';
 
 const Detail = (props) => {
     const [title, setTitle] = useState(props.title);
-    console.log(title);
 
     return(
+        <Mutation mutation={updateTodo}>
+            {updateTodo => (
         <Mutation mutation={deleteTodo}>
              {deleteTodo => (
         <Mutation mutation={markComplete}>
@@ -28,6 +29,7 @@ const Detail = (props) => {
                     component="h2"
                     >
                         <input
+                            placeholder={props.title}
                             value={title}
                             onChange={(e)=> {
                                 setTitle(e.currentTarget.value)
@@ -51,7 +53,7 @@ const Detail = (props) => {
                             refetchQueries: [{ query: getTodos }]
                         })
                     }}
-                >Done
+                >I'm Done!
                 </Button>
                 <Button
                     value={props.id}
@@ -67,11 +69,27 @@ const Detail = (props) => {
                 >
                     Delete
                 </Button>
+                <Button
+                    value={ props.id }
+                    variant="contained"
+                    color="default"
+                    onClick={ async (e) => {
+                        const id = e.currentTarget.value;
+                        await updateTodo({
+                            variables: { id, title },
+                            refetchQueries: [{ query: getTodos }]
+                        });
+                    } }
+                >
+                    Update
+                </Button>
             </CardActions>
         </Card>
             )}
         </Mutation>
             )}
+        </Mutation>
+            ) }
         </Mutation>
              
     )
@@ -83,5 +101,8 @@ export default compose(
     }),
     graphql(getTodos, {
       name: "getTodos"
+    }),
+    graphql(updateTodo, {
+        name: "updateTodo"
     })
   )(Detail);

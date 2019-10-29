@@ -9,8 +9,8 @@ import Detail from '../Detail';
 
 const AllTodos = (props)=> {
 
-    const [currentTitle, setCurrentTitle] = useState("Click A Card");
-    const [currentDescription, setCurrentDescription] = useState("To View The Task Detail");
+    const [currentTitle, setCurrentTitle] = useState("");
+    const [currentDescription, setCurrentDescription] = useState("");
     const [currentId, setCurrentId] = useState("");
     
     
@@ -25,7 +25,7 @@ const AllTodos = (props)=> {
                         <div>
                         <div>
                             {data.tasks.map((task) => {
-                                if(task.title && !task.completed){
+                                if(task.title){
                                     
                                     return (
                                         <div id={task.id} className="todo-card" key={ task.id }

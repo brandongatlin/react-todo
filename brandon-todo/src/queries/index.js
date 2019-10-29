@@ -49,6 +49,18 @@ const deleteTodo = gql`
   }
 `
 
+const updateTodo = gql`
+  mutation updateTodo($id: String!, $title: String!) {
+    updateTodo(input: {id: $id, title: $title})
+      @rest(type: "task", path: "/{args.input.id}", method: "PATCH") {
+        id
+        title
+        description
+        completed
+      }
+  }
+`
 
 
-export { getTodos, addTodoQuery, deleteTodo, markComplete };
+
+export { getTodos, addTodoQuery, deleteTodo, markComplete, updateTodo };
